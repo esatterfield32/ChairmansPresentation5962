@@ -19,13 +19,25 @@ void loop() {
   if (Serial.available()>0){
    incomingByte = Serial.read();
    Serial.println("recieved command" + (char)incomingByte);
-   if (incomingByte == 'o'){
+   if (incomingByte == '1'){
+    powerPiston(piston1);
+   }
+    else if (incomingByte == '2'){
+    powerPiston(piston2);
+   }
+    else if (incomingByte == '3'){
+    powerPiston(piston3);
+   }
+    else if (incomingByte == '4'){
+    powerPiston(piston4);
+   }
+    else if (incomingByte == '5'){
+    powerPiston(piston5);
+   }
+    else if (incomingByte == '6'){
     
-    Serial.println();
    }
-   else{
-    Serial.println();
-   }
+   
 }
 }
 
