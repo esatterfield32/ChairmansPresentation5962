@@ -1,8 +1,8 @@
 #include <FastLED.h>
 int piston1= 2;
-int piston2= 3;
-int piston3= 4;
-int piston4= 5;
+int piston2= 4;
+int piston3= 6;
+int piston4= 8;
 int incomingByte = 0;
 
 #define NUM_LEDS 56
@@ -16,8 +16,9 @@ CRGB snapshot_colors[] = {CRGB::White,CRGB::Blue,CRGB::Red,CRGB::Yellow,CRGB::Gr
 void setup() {
    Serial.begin(9600);
    FastLED.addLeds<WS2812B, LED_DATA_PIN, GRB>(leds, NUM_LEDS);
-   for(int i = 2;  i<6; i++){
+   for(int i = 2;  i<10; i++){
     pinMode(i,OUTPUT);
+    digitalWrite(i,1);
     
    }
    
@@ -60,12 +61,14 @@ void powerPiston(int pistonNumber ){
     FastLED.show();
     }
     digitalWrite(pistonNumber, LOW);
+    digitalWrite(pistonNumber+1,HIGH);
     Serial.println("relay on");
     
     } 
   
   else{
     digitalWrite(pistonNumber, HIGH);
+    digitalWrite(pistonNumber +1, LOW);
     Serial.print("relay off");
     for (int led = startNumber; led < endNumber; led++) {
     leds[led] = CRGB::Black;
