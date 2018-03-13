@@ -48,32 +48,34 @@ void loop() {
 }
 }
 
-void powerPiston(int pistonNumber ){
-  int startNumber = (pistonNumber - 2) * 14;
-  int endNumber = (pistonNumber - 1) * 14;
+void powerPiston(int pistonPin){
+  int pistonNumber = pistonPin/2 - 1;
+  int startLED = (pistonNumber) * 14;
+  int endLED = (pistonNumber + 1) * 14;
  
   if(digitalRead(pistonNumber) == 1){  
    
-    Serial.println(startNumber);
-    Serial.println(endNumber);
-    for (int led = startNumber; led < endNumber; led++) {
+    Serial.println(startLED);
+    Serial.println(endLED);
+    for (int led = startLED; led < endLED; led++) {
     leds[led] = CRGB::Yellow;
     FastLED.show();
     }
-    digitalWrite(pistonNumber, LOW);
-    digitalWrite(pistonNumber+1,HIGH);
+    digitalWrite(pistonPin, LOW);
+    digitalWrite(pistonPin + 1,HIGH);
     Serial.println("relay on");
     
     } 
   
   else{
-    digitalWrite(pistonNumber, HIGH);
-    digitalWrite(pistonNumber +1, LOW);
+    digitalWrite(pistonPin, HIGH);
+    digitalWrite(pistonPin +1, LOW);
     Serial.print("relay off");
-    for (int led = startNumber; led < endNumber; led++) {
+    for (int led = startLED; led < endLED; led++) {
     leds[led] = CRGB::Black;
     FastLED.show();
     }
   }
 }
+
 
