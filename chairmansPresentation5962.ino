@@ -3,9 +3,11 @@ int piston1= 2;
 int piston2= 4;
 int piston3= 6;
 int piston4= 8;
+int basket1 = 0;
+int basket2 = 1;
 int incomingByte = 0;
-
-#define NUM_LEDS 56
+bool basketOn[] = {false,false};
+#define NUM_LEDS 76
 
 #define LED_DATA_PIN 10
 
@@ -44,7 +46,15 @@ void loop() {
     else if (incomingByte == '4'){
     powerPiston(piston4);
    }
-   
+    else if (incomingByte == '5'){
+    lightBaskets(basket1);
+   }
+   else if (incomingByte == '6'){
+   lightBaskets(basket2);
+   }
+   else if (incomingByte == '7'){
+    bigFinale();
+   }
 }
 }
 
@@ -53,7 +63,7 @@ void powerPiston(int pistonPin){
   int startLED = (pistonNumber) * 14;
   int endLED = (pistonNumber + 1) * 14;
  
-  if(digitalRead(pistonNumber) == 1){  
+  if(digitalRead(pistonPin) == 1){  
    
     Serial.println(startLED);
     Serial.println(endLED);
@@ -78,4 +88,40 @@ void powerPiston(int pistonPin){
   }
 }
 
+void lightBaskets(int basketNumber){
+  int LEDStart = 56 + (basketNumber)*10;
+  int LEDEnd = LEDStart + 10;
+  if (!basketOn[basketNumber]){
+    for (int led = LEDStart; led < LEDEnd; led++) {
+    leds[led] = CRGB::Yellow;
+    FastLED.show();
+    }
+    basketOn[basketNumber] = true;
+  }
+  else{
+    for (int led = LEDStart; led < LEDEnd; led++) {
+    leds[led] = CRGB::Black;
+    FastLED.show();
+  }
+  basketOn[basketNumber] = false;
+  }
+}
 
+void bigFinale (){
+   for (int colors = 0; colors < 255; colors++) {
+    for (int windows = 0; windows < 4; windows++) {
+      for (int led = 0; led < 14; led++) {
+        int index = windows * 14 + led;
+        int color_index = colors % 5 + windows;
+        leds[index] = snapshot_colors[color_index];     
+      }
+    }
+    for (int baskets = 0; baskets <2; baskets++){
+      for (int led = 0; led < 10; led++) {
+        int index = 56 + baskets*10 + led;
+        int color_index = colors % 5 + baskets;
+        leds[index] = snapshot_colors[color_index];
+    }
+    }
+   }
+}
