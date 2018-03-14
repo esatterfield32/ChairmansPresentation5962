@@ -1,8 +1,8 @@
 #include <FastLED.h>
-int piston1= 2;
-int piston2= 4;
-int piston3= 6;
 int piston4= 8;
+int piston3= 6;
+int piston2= 4;
+int piston1= 2;
 int basket1 = 0;
 int basket2 = 1;
 int incomingByte = 0;
@@ -22,6 +22,10 @@ void setup() {
     pinMode(i,OUTPUT);
     digitalWrite(i,1);
     
+   }
+   for (int led = 0; led < NUM_LEDS; led++) {
+    leds[led] = CRGB::Black;
+    FastLED.show();
    }
    
  
@@ -60,8 +64,8 @@ void loop() {
 
 void powerPiston(int pistonPin){
   int pistonNumber = pistonPin/2 - 1;
-  int startLED = (pistonNumber) * 14;
-  int endLED = (pistonNumber + 1) * 14;
+  int endLED = 56-(pistonNumber) * 14;
+  int startLED = 56-(pistonNumber + 1) * 14;
  
   if(digitalRead(pistonPin) == 1){  
    
